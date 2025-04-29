@@ -1,38 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 @config "../tailwind.config.ts";
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:where(.dark, .dark *));
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  /* margin: 0; */
+  /* padding: 0;  */
+  /* box-sizing: border-box; */
 }
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-/* .no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #dddddd;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #5c5c7b;
-  border-radius: 50px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #7878a3;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-  border-radius: 2px;
-} */
 
 .glassmorphism {
   background: rgba(255, 255, 255, 0.25);
@@ -41,6 +18,48 @@
 }
 
 @theme {
+
+  --color-fill: rgba(255, 255, 255, 0.10);
+  --color-sky: #f3f9ff;
+  --color-bankGradient: #0179fe;
+
+  --color-black-1: #00214f;
+  --color-black-2: #344054;
+
+  --color-indigo-500: #6172F3;
+  --color-indigo-700: #3538CD;
+
+  --color-success-25: #F6FEF9;
+  --color-success-50: #ECFDF3;
+  --color-success-100: #D1FADF;
+  --color-success-600: #039855;
+  --color-success-700: #027A48;
+  --color-success-900: #054F31;
+
+  --color-pink-25: #FEF6FB;
+  --color-pink-50: #FCE7F6;
+  --color-pink-100: #EE46BC;
+  --color-pink-600: #DD2590;
+  --color-pink-700: #C11574;
+  --color-pink-900: #851651;
+
+  --color-blue-25: #F5FAFF;
+  --color-blue-50: #D1E9FF;
+  --color-blue-100: #2E90FA;
+  --color-blue-600: #1570EF;
+  --color-blue-700: #175CD3;
+  --color-blue-900: #194185;
+
+  --color-gray-25: #FCFCFD;
+  --color-gray-200: #EAECF0;
+  --color-gray-300: #D0D5DD;
+  --color-gray-500: #667085;
+  --color-gray-600: #475467;
+  --color-gray-700: #344054;
+  --color-gray-900: #101828;
+
+  --font-inter: var(--font-inter);
+  --font-ibm-plex-serif: var(--font-ibm-plex-serif);
 
   --text-10: 10px;
   --text-10--line-height: 14px;
@@ -78,7 +97,7 @@
     to {
       height: var(--radix-accordion-content-height);
     }
-  };
+  }
   
   @keyframes accordion-up {
     from {
@@ -118,7 +137,7 @@
   }
 
   .home-content {
-    @apply no-scrollbar flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll;
+    @apply no-scrollbar flex w-full flex-1 flex-col gap-8 xl:max-h-screen xl:overflow-y-scroll;
   }
 
   .home-header {
@@ -266,7 +285,7 @@
 
   /* PlaidLink */
   .plaidlink-primary {
-    @apply text-[16px] leading-[24px] rounded-lg border border-bank-gradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-[16px] leading-[24px] rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
   }
 
   .plaidlink-ghost {
@@ -279,7 +298,7 @@
 
   /* Auth */
   .auth-asset {
-    @apply flex h-screen w-full sticky top-0 items-center justify-end bg-sky-1 max-lg:hidden;
+    @apply flex h-screen w-full sticky top-0 items-center justify-end bg-sky max-lg:hidden;
   }
 
   /* Auth Form */
@@ -300,11 +319,11 @@
   }
 
   .form-btn {
-    @apply text-[16px] leading-[24px] rounded-lg border border-bank-gradient bg-bank-gradient font-semibold text-white shadow-form;
+    @apply text-[16px] leading-[24px] rounded-lg border border-bankGradient bg-bank-gradient font-semibold text-white shadow-form;
   }
 
   .form-link {
-    @apply text-14 cursor-pointer font-medium text-bank-gradient;
+    @apply text-14 cursor-pointer font-medium text-bankGradient;
   }
 
   /* Payment Transfer */
