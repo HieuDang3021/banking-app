@@ -7,13 +7,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { formSchema } from "@/lib/utils";
+import { FormSchema } from "@/lib/utils";
 import CustomFormField from "./CustomFormField";
 import { Loader2 } from "lucide-react";
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const formSchema = FormSchema(type);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,6 +65,50 @@ const AuthForm = ({ type }: { type: string }) => {
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {type === "sign-up" && (
+                <>
+                  <div className="flex gap-4">
+                    <CustomFormField
+                      control={form.control}
+                      name="firstName"
+                      label="First Name"
+                      placeholder="ex: John"
+                    />
+                    <CustomFormField
+                      control={form.control}
+                      name="lastName"
+                      label="Last Name"
+                      placeholder="ex: Doe"
+                    />
+                  </div>
+                  <CustomFormField
+                    control={form.control}
+                    name="address"
+                    label="Address"
+                    placeholder="Enter your address"
+                  />
+                  <div className="flex gap-4">
+                    <CustomFormField
+                      control={form.control}
+                      name="state"
+                      label="State"
+                      placeholder="ex: VIC"
+                    />
+                    <CustomFormField
+                      control={form.control}
+                      name="postalCode"
+                      label="Postal Code"
+                      placeholder="ex: 1234"
+                    />
+                  </div>
+                  <CustomFormField
+                    control={form.control}
+                    name="dateOfBirth"
+                    label="Date of Birth"
+                    placeholder="ex: yyyy-mm-dd"
+                  />
+                </>
+              )}
               <CustomFormField
                 control={form.control}
                 name="email"
@@ -76,28 +121,43 @@ const AuthForm = ({ type }: { type: string }) => {
                 label="Password"
                 placeholder="Enter your password"
               />
-              {/* {type === "sign-up" && (
+              {type === "sign-up" && (
                 <CustomFormField
                   control={form.control}
                   name="confirmPassword"
                   label="Confirm Password"
                   placeholder="Re-enter your password"
                 />
-              )} */}
-              <Button type="submit" className="form-btn" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="animate-spin size-6" />{" "}
-                    <span>Loading...</span>
-                  </>
-                ) : type === "sign-in" ? (
-                  "Sign In"
-                ) : (
-                  "Sign Up"
-                )}
-              </Button>
+              )}
+              <div className="flex flex-col gap-4">
+                <Button type="submit" className="form-btn" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" />{" "}
+                      <span>Loading...</span>
+                    </>
+                  ) : type === "sign-in" ? (
+                    "Sign In"
+                  ) : (
+                    "Sign Up"
+                  )}
+                </Button>
+              </div>
             </form>
           </Form>
+          <footer className="flex justify-center gap-1">
+            <p className="text-14 font-normal text-gray-600">
+              {type === "sign-in"
+                ? "Don't have an account?"
+                : "Already have an account?"}
+            </p>
+            <Link
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              className="form-link"
+            >
+              {type === "sign-in" ? "Sign Up" : "Sign In"}
+            </Link>
+          </footer>
         </>
       )}
     </section>

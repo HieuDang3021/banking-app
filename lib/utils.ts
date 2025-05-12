@@ -198,14 +198,21 @@ export const getTransactionStatus = (date: Date) => {
 };
 
 // Form utils
-export const formSchema = z.object({
+export const FormSchema = (type : string) => z.object({
+  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  address: type === "sign-in" ? z.string().optional() : z.string().min(3).max(50),
+  state: type === "sign-in" ? z.string().optional() : z.string().min(3).max(3),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3).max(4),
+  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
+  confirmPassword: type === "sign-in" ? z.string().optional() : z.string(),
+
   email: z.string().email(),
   password: z.string().min(8, {
     message: "Password must be atleast 8 character long",
   }),
-  // confirmPassword: z.string(),
 })
-// .refine((data) => data.password === data.confirmPassword, {
-//   message: "Password must match",
-//   path: ["confirmPassword"],
-// });
+.refine((data) => data.password === data.confirmPassword || type === "sign-in", {
+  message: "Password must match",
+  path: ["confirmPassword"],
+});
