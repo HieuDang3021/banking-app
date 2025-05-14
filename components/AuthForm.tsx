@@ -7,11 +7,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { FormSchema } from "@/lib/utils";
+import { FormSchema, AUTHPAGETYPE } from "@/lib/utils";
 import CustomFormField from "./CustomFormField";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { signIn, signUp, signUpWithEmail } from "@/lib/actions/user.action";
 
-const AuthForm = ({ type }: { type: string }) => {
+const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = FormSchema(type);
@@ -27,17 +30,37 @@ const AuthForm = ({ type }: { type: string }) => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     setIsLoading(true);
+
+    try {
+      //sign up to Appwire and create plaid token
+
+      if (type === AUTHPAGETYPE.signUp) {
+        const newUser = await signUpWithEmail(values);
+        setUser(newUser);
+      } else if (type === AUTHPAGETYPE.signIn) {
+        // const response = await signIn({
+        //   email: values.email,
+        //   password: values.password,
+        // });
+        // if (response) router.push("/");
+      }
+    } catch (error) {
+      console.error("Error duiring form submission: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+
     const timeout = 5000; // Set timeout duration in milliseconds
     console.log(values);
+
     setTimeout(() => {
       // Add your logic here
       setIsLoading(false);
     }, timeout);
-  }
+  };
 
   return (
     <section className="auth-form">
@@ -50,7 +73,11 @@ const AuthForm = ({ type }: { type: string }) => {
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
-            {user ? "Link Account" : type === "sign-in" ? "Sign In" : "Sign Up"}
+            {user
+              ? "Link Account"
+              : type === AUTHPAGETYPE.signIn
+              ? "Sign In"
+              : "Sign Up"}
             <p className="text-16 font-normal text-gray-600">
               {user
                 ? "Link your account to get started"
@@ -65,7 +92,7 @@ const AuthForm = ({ type }: { type: string }) => {
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              {type === "sign-up" && (
+              {type === AUTHPAGETYPE.signUp && (
                 <>
                   <div className="flex gap-4">
                     <CustomFormField
@@ -121,7 +148,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 label="Password"
                 placeholder="Enter your password"
               />
-              {type === "sign-up" && (
+              {type === AUTHPAGETYPE.signUp && (
                 <CustomFormField
                   control={form.control}
                   name="confirmPassword"
@@ -136,7 +163,7 @@ const AuthForm = ({ type }: { type: string }) => {
                       <Loader2 size={20} className="animate-spin" />{" "}
                       <span>Loading...</span>
                     </>
-                  ) : type === "sign-in" ? (
+                  ) : type === AUTHPAGETYPE.signIn ? (
                     "Sign In"
                   ) : (
                     "Sign Up"
@@ -147,15 +174,15 @@ const AuthForm = ({ type }: { type: string }) => {
           </Form>
           <footer className="flex justify-center gap-1">
             <p className="text-14 font-normal text-gray-600">
-              {type === "sign-in"
+              {type === AUTHPAGETYPE.signIn
                 ? "Don't have an account?"
                 : "Already have an account?"}
             </p>
             <Link
-              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              href={type === AUTHPAGETYPE.signIn ? "/sign-up" : "/sign-in"}
               className="form-link"
             >
-              {type === "sign-in" ? "Sign Up" : "Sign In"}
+              {type === AUTHPAGETYPE.signIn ? "Sign Up" : "Sign In"}
             </Link>
           </footer>
         </>

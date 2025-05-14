@@ -198,21 +198,29 @@ export const getTransactionStatus = (date: Date) => {
 };
 
 // Form utils
-export const FormSchema = (type : string) => z.object({
-  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  address: type === "sign-in" ? z.string().optional() : z.string().min(3).max(50),
-  state: type === "sign-in" ? z.string().optional() : z.string().min(3).max(3),
-  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3).max(4),
-  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
-  confirmPassword: type === "sign-in" ? z.string().optional() : z.string(),
+export const FormSchema = (type : AUTHPAGETYPE) => z.object({
+  firstName: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3),
+  lastName: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3),
+  address: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3).max(50),
+  state: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3).max(3),
+  postalCode: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3).max(4),
+  dateOfBirth: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string().min(3),
+  confirmPassword: type === AUTHPAGETYPE.signIn ? z.string().optional() : z.string(),
 
   email: z.string().email(),
   password: z.string().min(8, {
     message: "Password must be atleast 8 character long",
   }),
 })
-.refine((data) => data.password === data.confirmPassword || type === "sign-in", {
+.refine((data) => data.password === data.confirmPassword || type === AUTHPAGETYPE.signIn, {
   message: "Password must match",
   path: ["confirmPassword"],
 });
+
+//ENUM
+//auth page type
+export const enum AUTHPAGETYPE {
+  signUp = "sign-up",
+  signIn = "sign-in",
+}
+

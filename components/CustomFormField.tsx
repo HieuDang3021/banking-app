@@ -3,10 +3,10 @@ import { FormControl, FormField, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Control, FieldPath } from "react-hook-form";
 import { z } from "zod";
-import { FormSchema } from "@/lib/utils";
+import { AUTHPAGETYPE, FormSchema } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const formSchema = FormSchema("sign-up");
+const formSchema = FormSchema(AUTHPAGETYPE.signUp);
 
 type props = {
   control: Control<z.infer<typeof formSchema>>;
