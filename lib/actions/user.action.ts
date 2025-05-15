@@ -14,17 +14,11 @@ export const signIn = async ({
 }) => {
   try {
     //ACTION
+    const { account } = await createAdminClient();
+    const response = await account.createEmailPasswordSession( email, password );
+    return parseStringify(response);
   } catch (error) {
     console.error("Error while making sign in request: ", error);
-  }
-};
-
-export const signUp = async (userData: SignUpParams) => {
-  try {
-    //ACTION
-
-  } catch (error) {
-    console.error("Error while making sign up request: ", error);
   }
 };
 
@@ -53,8 +47,23 @@ export async function signUpWithEmail(userData: SignUpParams) {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const user = await account.get();
+    return parseStringify(user);
   } catch (error) {
     return console.error("Error when create client session:", error);
   }
+}
+
+export const logoutAccount = async () => {
+ try {
+  const {account} = await createSessionClient();
+
+  (await cookies()).delete('appwrite-session');
+
+  await account.deleteSession('current');
+
+  return 1;
+ } catch (error) {
+  console.error("Error while Loggout account: ", error);
+ }
 }

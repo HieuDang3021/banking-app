@@ -224,3 +224,9 @@ export const enum AUTHPAGETYPE {
   signIn = "sign-in",
 }
 
+//footer type
+export const enum FOOTERTYPE {
+  DESKTOP = "desktop",
+  MOBILE = "mobile",
+}
+

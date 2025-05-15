@@ -23,9 +23,15 @@ const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
+      address: "",
+      state: "",
+      postalCode: "",
+      dateOfBirth: "",
       email: "",
       password: "",
-      // confirmPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -41,11 +47,11 @@ const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
         const newUser = await signUpWithEmail(values);
         setUser(newUser);
       } else if (type === AUTHPAGETYPE.signIn) {
-        // const response = await signIn({
-        //   email: values.email,
-        //   password: values.password,
-        // });
-        // if (response) router.push("/");
+        const response = await signIn({
+          email: values.email,
+          password: values.password,
+        });
+        if (response) router.replace("/");
       }
     } catch (error) {
       console.error("Error duiring form submission: ", error);
