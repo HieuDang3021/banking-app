@@ -11,7 +11,7 @@ import { FormSchema, AUTHPAGETYPE } from "@/lib/utils";
 import CustomFormField from "./CustomFormField";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signIn, signUp, signUpWithEmail } from "@/lib/actions/user.action";
+import { signIn, signUpWithEmail } from "@/lib/actions/user.action";
 
 const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
   const router = useRouter();
@@ -51,6 +51,7 @@ const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
           email: values.email,
           password: values.password,
         });
+        console.log(response);
         if (response) router.replace("/");
       }
     } catch (error) {
@@ -58,14 +59,6 @@ const AuthForm = ({ type }: { type: AUTHPAGETYPE }) => {
     } finally {
       setIsLoading(false);
     }
-
-    const timeout = 5000; // Set timeout duration in milliseconds
-    console.log(values);
-
-    setTimeout(() => {
-      // Add your logic here
-      setIsLoading(false);
-    }, timeout);
   };
 
   return (
